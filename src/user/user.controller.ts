@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import _ from 'lodash';
-import { map, switchMap, tap, mapTo } from 'rxjs/operators';
+import * as _ from 'lodash';
+import { throwError } from 'rxjs';
+import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IAuthorizedReq } from './interfaces/authorized-req.interface';
+import { User } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -37,7 +39,16 @@ export class UserController {
    */
   @Post()
   create(@Body() newUser: CreateUserDto) {
-    return this.userService.createOne(newUser);
+    return this.userService.generateHashSimple(newUser.password).pipe(
+      catchError(err => throwError(new Error(`hash failed: ${err}`))),
+      switchMap(hash => {
+        const user = new User();
+        user.username = newUser.username;
+        user.nickname = newUser.nickname;
+        user.passwordHash = hash;
+        return this.userService.createOne(user);
+      }),
+    );
   }
 
   @Put(':id')

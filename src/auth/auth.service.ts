@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { of, throwError } from 'rxjs';
-import { catchError, mapTo } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 import { IUserPayload } from '../user/interfaces/user-payload.interface';
 import { UserService } from './../user/user.service';
@@ -27,10 +27,10 @@ export class AuthService {
         if (err instanceof NotFoundException) {
           return of(null);
         } else {
-          throwError(err);
+          return throwError(err);
         }
       }),
-      mapTo(payload),
+      map(user => user ? payload : null),
     ).toPromise();
   }
 }

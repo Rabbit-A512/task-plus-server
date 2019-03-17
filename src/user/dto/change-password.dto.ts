@@ -1,4 +1,4 @@
-import { Matches, Allow } from 'class-validator';
+import { Allow, Matches } from 'class-validator';
 
 export class ChangePasswordDto {
   /**

@@ -1,4 +1,5 @@
 import { BadRequestException, Body, Controller, InternalServerErrorException, Post } from '@nestjs/common';
+import * as _ from 'lodash';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { IUserPayload } from 'src/user/interfaces/user-payload.interface';
@@ -22,7 +23,7 @@ export class AuthController {
       return throwError(new BadRequestException('Username and password are required!'));
     }
 
-    return this.userService.findOneByUsername(username).pipe(
+    return this.userService.findOneByCondition({ username }).pipe(
       tap(user => {
         if (user === undefined) {
           // username doesnot exist
@@ -40,10 +41,7 @@ export class AuthController {
         }),
       )),
       map(user => {
-        const userPayload: IUserPayload = {
-          id: user.id,
-          nickname: user.nickname,
-        };
+        const userPayload: IUserPayload = _.pick(user, ['id', 'nickname']);
         return this.authService.createToken(userPayload);
       }),
       catchError(err => {

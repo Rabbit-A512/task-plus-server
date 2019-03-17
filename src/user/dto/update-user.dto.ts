@@ -1,4 +1,4 @@
-import { Length, Matches, IsOptional } from 'class-validator';
+import { IsOptional, Length } from 'class-validator';
 
 export class UpdateUserDto {
 

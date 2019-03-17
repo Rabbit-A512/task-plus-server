@@ -1,71 +1,78 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import _ from 'lodash';
-import { from, Observable, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { DeleteResult, InsertResult, Repository } from 'typeorm';
+import { from, Observable } from 'rxjs';
+import { EntityService } from 'src/utils/entity.service';
+import { Repository } from 'typeorm';
 
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 
 @Injectable()
-export class UserService {
+export class UserService extends EntityService<User, UpdateUserDto> {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
-
-  findOneById(id: string): Observable<User> {
-    return from(this.userRepository.findOne(id)).pipe(
-      tap(user => {
-        if (!user) {
-          throw new NotFoundException();
-        }
-      }),
-    );
+  ) {
+    super(userRepository);
   }
 
-  findOneByUsername(username: string): Observable<User> {
-    return from(this.userRepository.findOne({ username }));
-  }
+  // findOneById(id: EntityId): Observable<User> {
+  //   return from(this.userRepository.findOne(id)).pipe(
+  //     tap(user => {
+  //       if (!user) {
+  //         throw new NotFoundException();
+  //       }
+  //     }),
+  //   );
+  // }
 
-  findAll(): Observable<User[]> {
-    // 这里查不到数据不手动报错，因为会返回空数组[]，前端处理
-    return from(this.userRepository.find());
-  }
+  // findOneByUsername(username: string): Observable<User> {
+  //   return from(this.userRepository.findOne({ username }));
+  // }
 
-  createOne(newUser: CreateUserDto): Observable<InsertResult> {
-    return this.generateHashSimple(newUser.password).pipe(
-      catchError(err => throwError(new Error(`hash failed: ${err}`))),
-      switchMap(hash => {
-        const user = new User();
-        user.username = newUser.username;
-        user.nickname = newUser.nickname;
-        user.passwordHash = hash;
-        return this.userRepository.insert(user);
-      }),
-    );
-  }
+  // findAll(): Observable<User[]> {
+  //   // 这里查不到数据不手动报错，因为会返回空数组[]，前端处理
+  //   return from(this.userRepository.find());
+  // }
 
-  updateOneById(id: string, updatedUser: UpdateUserDto): Observable<User> {
-    return this.findOneById(id).pipe(
-      tap(user => {
-        if (!user) {
-          throw new NotFoundException();
-        }
-      }),
-      switchMap(user => {
-        Object.assign(user, updatedUser);
-        return from(this.userRepository.save(user));
-      }),
-    );
-  }
+  // /**
+  //  * 创建用户，由于涉及密码哈希，因此这是一个新的方法
+  //  *
+  //  * @param {CreateUserDto} newUser
+  //  * @returns {Observable<User>}
+  //  * @memberof UserService
+  //  */
+  // createOne(newUser: CreateUserDto): Observable<User> {
+  //   return this.generateHashSimple(newUser.password).pipe(
+  //     catchError(err => throwError(new Error(`hash failed: ${err}`))),
+  //     switchMap(hash => {
+  //       const user = new User();
+  //       user.username = newUser.username;
+  //       user.nickname = newUser.nickname;
+  //       user.passwordHash = hash;
+  //       return this.userRepository.save(user);
+  //     }),
+  //   );
+  // }
 
-  deleteOneById(id: string): Observable<DeleteResult> {
-    return from(this.userRepository.delete(id));
-  }
+  // updateOneById(id: EntityId, updatedUser: UpdateUserDto): Observable<User> {
+  //   return this.findOneById(id).pipe(
+  //     tap(user => {
+  //       if (!user) {
+  //         throw new NotFoundException();
+  //       }
+  //     }),
+  //     switchMap(user => {
+  //       Object.assign(user, updatedUser);
+  //       return from(this.userRepository.save(user));
+  //     }),
+  //   );
+  // }
+
+  // deleteOneById(id: EntityId): Observable<DeleteResult> {
+  //   return from(this.userRepository.delete(id));
+  // }
 
   // =====================
   // 以下是工具方法

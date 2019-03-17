@@ -1,7 +1,7 @@
 ### get all users
 
 GET http://localhost:3000/users HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdC1hNTEyIiwiaWF0IjoxNTUyNzQ0NjczLCJleHAiOjE1NTI3NDgyNzN9.WUrHgIbgfxn-pqdLZtpp2N9hc2KU9bZtFA7_1f6-Yc8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjgxOTIzMCwiZXhwIjoxNTUyODIyODMwfQ.7SlNPe4qJdxde2qCUaju7VZOfEER2AOpxBQ8q2pBprY
 
 ### get one user by id
 
@@ -38,7 +38,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrb
 ### change password
 
 POST http://localhost:3000/users/change-password HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1Mjc1MTM3MiwiZXhwIjoxNTUyNzU0OTcyfQ.IJmDbXg2I6ZSrBnrgaGuGNboaevB5GbAG884RkFGK_M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjgyMzgzNSwiZXhwIjoxNTUyODI3NDM1fQ.AJ23dfp5Dl_l39FjZt0IwlONj6E2A-dGIdUAYfsXkXY
 Content-Type: application/json
 
 {
