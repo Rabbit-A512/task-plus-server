@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { from, Observable } from 'rxjs';
-import { EntityService } from 'src/utils/entity.service';
+import { BaseEntityService } from 'src/utils/entity.service';
 import { Repository } from 'typeorm';
 
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 
 @Injectable()
-export class UserService extends EntityService<User, UpdateUserDto> {
+export class UserService extends BaseEntityService<User, UpdateUserDto> {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,

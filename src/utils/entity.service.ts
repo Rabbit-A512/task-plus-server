@@ -4,6 +4,7 @@ import { from, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { DeleteResult, Repository } from 'typeorm';
 
+import { IEntityService } from './custom-interfaces';
 import { EntityId } from './custom-types';
 
 /**
@@ -14,7 +15,7 @@ import { EntityId } from './custom-types';
  * @template TEntity 实体类型
  * @template TUpdateDto 实体对应的更新Dto类型
  */
-export class EntityService<TEntity, TUpdateDto> {
+export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TEntity, TUpdateDto> {
   constructor(private readonly repo: Repository<TEntity>) {}
 
   findOneById(id: EntityId): Observable<TEntity> {
