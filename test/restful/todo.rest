@@ -1,0 +1,50 @@
+### get all
+GET http://localhost:3000/todos HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkxMzY2MywiZXhwIjoxNTUzNTE4NDYzfQ.eEqHxnXCWrhX4_HNtd9JgvTfKJADWWyk-rKJSHS9hPs
+
+### get one by id
+
+GET http://localhost:3000/todos/7 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkxMzY2MywiZXhwIjoxNTUzNTE4NDYzfQ.eEqHxnXCWrhX4_HNtd9JgvTfKJADWWyk-rKJSHS9hPs
+
+### create one
+
+POST http://localhost:3000/todos HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkxMzY2MywiZXhwIjoxNTUzNTE4NDYzfQ.eEqHxnXCWrhX4_HNtd9JgvTfKJADWWyk-rKJSHS9hPs
+Content-Type: application/json
+
+{
+  "title": "todo module",
+  "description": "finish todo module",
+  "createdAt": "{{$datetime iso8601}}",
+  "planToFinishAt": "{{$datetime iso8601 3 d}}"
+}
+
+### create a sub-todo
+
+POST http://localhost:3000/todos/7/sub-todos HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkxMzY2MywiZXhwIjoxNTUzNTE4NDYzfQ.eEqHxnXCWrhX4_HNtd9JgvTfKJADWWyk-rKJSHS9hPs
+Content-Type: application/json
+
+{
+  "title": "sub todo",
+  "description": "test sub todo",
+  "createdAt": "{{$datetime iso8601}}",
+  "planToFinishAt": "{{$datetime iso8601 3 d}}"
+}
+
+### update a todo by id
+
+PUT http://localhost:3000/todos/4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkwNDY4OCwiZXhwIjoxNTUzNTA5NDg4fQ.hXWH1A3ErVgBZPGzXN1Hnv5pnsyasNMP7Z-R4jy_R6w
+Content-Type: application/json
+
+{
+  "title": "new Title",
+  "description": ""
+}
+
+### delete a todo by id
+
+DELETE http://localhost:3000/todos/4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkwNDY4OCwiZXhwIjoxNTUzNTA5NDg4fQ.hXWH1A3ErVgBZPGzXN1Hnv5pnsyasNMP7Z-R4jy_R6w

@@ -16,7 +16,7 @@ export class AuthService {
 
   createToken(userPayload: IUserPayload): IToken {
     return {
-      expiresIn: 3600,
+      expiresIn: '7 days',
       token: this.jwtService.sign(userPayload),
     };
   }

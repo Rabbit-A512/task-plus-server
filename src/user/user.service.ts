@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { from, Observable } from 'rxjs';
-import { BaseEntityService } from 'src/utils/entity.service';
+import { map, tap } from 'rxjs/operators';
+import { BaseEntityService } from 'src/utils/base-entity.service';
+import { EntityId } from 'src/utils/custom-types';
 import { Repository } from 'typeorm';
 
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,24 +19,37 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
     super(userRepository);
   }
 
-  // findOneById(id: EntityId): Observable<User> {
-  //   return from(this.userRepository.findOne(id)).pipe(
-  //     tap(user => {
-  //       if (!user) {
-  //         throw new NotFoundException();
-  //       }
-  //     }),
-  //   );
-  // }
+  findOneById(id: EntityId): Observable<User> {
+    return super.findOneById(id).pipe(
+      tap(user => {
+        if (user.isDeleted) {
+          throw new NotFoundException();
+        }
+      }),
+    );
+  }
 
-  // findOneByUsername(username: string): Observable<User> {
-  //   return from(this.userRepository.findOne({ username }));
-  // }
+  findOneByCondition(condition: object): Observable<User> {
+    return super.findOneByCondition(condition).pipe(
+      tap(user => {
+        if (user.isDeleted) {
+          throw new NotFoundException();
+        }
+      }),
+    );
+  }
 
-  // findAll(): Observable<User[]> {
-  //   // 这里查不到数据不手动报错，因为会返回空数组[]，前端处理
-  //   return from(this.userRepository.find());
-  // }
+  findAll(): Observable<User[]> {
+    return super.findAll().pipe(
+      map(users => users.filter(user => !user.isDeleted)),
+    );
+  }
+
+  findManyByCondition(condition: object): Observable<User[]> {
+    return super.findManyByCondition(condition).pipe(
+      map(users => users.filter(user => !user.isDeleted)),
+    );
+  }
 
   // /**
   //  * 创建用户，由于涉及密码哈希，因此这是一个新的方法
@@ -70,9 +85,9 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
   //   );
   // }
 
-  // deleteOneById(id: EntityId): Observable<DeleteResult> {
-  //   return from(this.userRepository.delete(id));
-  // }
+  deleteOneById(id: EntityId): Observable<any> {
+    return this.updateOneById(id, { isDeleted: true });
+  }
 
   // =====================
   // 以下是工具方法

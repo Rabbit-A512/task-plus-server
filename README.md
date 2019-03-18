@@ -13,6 +13,11 @@ TaskPlus application's backend server powered by NestJS.
 - [ ] business logic for multiple users
 - [ ] fully tested(*black box* and *white box*)
 
+## Remarkable designs
+
+- `EntityService<TEntity, TUpdateDto>`
+- Impliment permission with bit operation
+
 ## Installation
 
 ```bash

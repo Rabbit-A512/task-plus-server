@@ -12,7 +12,7 @@ export class UpdateUserDto {
     message: '用户昵称长度为1至25个字符',
   })
   @IsOptional()
-  readonly nickname?: string;
+  nickname?: string;
 
   /**
    * 密码哈希值，写在这里是为了复用UserService的update方法
@@ -21,5 +21,8 @@ export class UpdateUserDto {
    * @memberof UpdateUserDto
    */
   @IsOptional()
-  readonly passwordHash: string;
+  passwordHash?: string;
+
+  @IsOptional()
+  isDeleted?: boolean;
 }

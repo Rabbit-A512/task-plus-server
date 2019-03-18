@@ -19,11 +19,23 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
   constructor(private readonly repo: Repository<TEntity>) {}
 
   findOneById(id: EntityId): Observable<TEntity> {
-    return from(this.repo.findOne(id));
+    return from(this.repo.findOne(id)).pipe(
+      tap(entity => {
+        if (!entity) {
+          throw new NotFoundException();
+        }
+      }),
+    );
   }
 
   findOneByCondition(condition: object): Observable<TEntity> {
-    return from(this.repo.findOne(condition));
+    return from(this.repo.findOne(condition)).pipe(
+      tap(entity => {
+        if (!entity) {
+          throw new NotFoundException();
+        }
+      }),
+    );
   }
 
   findAll(): Observable<TEntity[]> {
@@ -60,6 +72,7 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
     );
   }
 
+  // TODO: 处理找不到id对应实体的情况
   deleteOneById(id: EntityId): Observable<DeleteResult> {
     return from(this.repo.delete(id));
   }

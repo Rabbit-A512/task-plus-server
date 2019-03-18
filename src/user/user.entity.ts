@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Todo } from './../todo/todo.entity';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -16,4 +17,16 @@ export class User {
 
   @Column({ length: 100, nullable: true })
   passwordHash: string;
+
+  @OneToMany(type => Todo, todo => todo.user)
+  todos: Todo[];
+
+  /**
+   * 控制用户是否被删除（删除用户只改变此标志位，而不直接从DB中删除记录）
+   *
+   * @type {boolean}
+   * @memberof User
+   */
+  @Column({ default: false })
+  isDeleted: boolean;
 }

@@ -6,7 +6,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrb
 ### get one user by id
 
 GET http://localhost:3000/users/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdC1hNTEyIiwiaWF0IjoxNTUyNzQ0NjczLCJleHAiOjE1NTI3NDgyNzN9.WUrHgIbgfxn-pqdLZtpp2N9hc2KU9bZtFA7_1f6-Yc8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkwMzg4NywiZXhwIjoxNTUyOTA3NDg3fQ.rjJdWoy2z3Atm37vcGdpkN1Np9GID7LGHLdDEUBK_EE
 
 ### create a new user
 
