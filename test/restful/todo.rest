@@ -1,6 +1,6 @@
 ### get all
 GET http://localhost:3000/todos HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkxMzY2MywiZXhwIjoxNTUzNTE4NDYzfQ.eEqHxnXCWrhX4_HNtd9JgvTfKJADWWyk-rKJSHS9hPs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTM3MDIwNjIsImV4cCI6MTU1NDMwNjg2Mn0.h4KyVTW12Rw79sa-GdrO6eJh4ruwjFZCS3y1ZNdRkNs
 
 ### get one by id
 
@@ -48,3 +48,13 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/todos/4 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjkwNDY4OCwiZXhwIjoxNTUzNTA5NDg4fQ.hXWH1A3ErVgBZPGzXN1Hnv5pnsyasNMP7Z-R4jy_R6w
+
+### find many by condition
+
+POST http://localhost:3000/todos/condition HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTM3MDIwNjIsImV4cCI6MTU1NDMwNjg2Mn0.h4KyVTW12Rw79sa-GdrO6eJh4ruwjFZCS3y1ZNdRkNs
+Content-Type: application/json
+
+{
+  "userId": 2
+}

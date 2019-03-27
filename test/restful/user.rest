@@ -1,6 +1,8 @@
 ### get all users
 
 GET http://localhost:3000/users HTTP/1.1
+  # ?skip=0
+  # &take=2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJuaWNrbmFtZSI6InJhYmJpdCIsImlhdCI6MTU1MjgxOTIzMCwiZXhwIjoxNTUyODIyODMwfQ.7SlNPe4qJdxde2qCUaju7VZOfEER2AOpxBQ8q2pBprY
 
 ### get one user by id

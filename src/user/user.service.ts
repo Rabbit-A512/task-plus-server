@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import * as _ from 'lodash';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { BaseEntityService } from 'src/utils/base-entity.service';
@@ -39,15 +40,25 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
     );
   }
 
-  findAll(): Observable<User[]> {
-    return super.findAll().pipe(
-      map(users => users.filter(user => !user.isDeleted)),
+  findAll(skip?: number, take?: number) {
+    return super.findAll(skip, take).pipe(
+      map(resArray => {
+        resArray.data = resArray.data
+          // .filter(user => !user.isDeleted)
+          .map(user => _.omit(user, ['password', 'passwordHash']));
+        return resArray;
+      }),
     );
   }
 
-  findManyByCondition(condition: object): Observable<User[]> {
-    return super.findManyByCondition(condition).pipe(
-      map(users => users.filter(user => !user.isDeleted)),
+  findManyByCondition(condition: object, skip?: number, take?: number) {
+    return super.findManyByCondition(condition, skip, take).pipe(
+      map(resArray => {
+        resArray.data = resArray.data
+          // .filter(user => !user.isDeleted)
+          .map(user => _.omit(user, ['password', 'passwordHash']));
+        return resArray;
+      }),
     );
   }
 
@@ -85,7 +96,7 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
   //   );
   // }
 
-  deleteOneById(id: EntityId): Observable<any> {
+  deleteOneById(id: EntityId): Observable<User> {
     return this.updateOneById(id, { isDeleted: true });
   }
 

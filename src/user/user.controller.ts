@@ -1,9 +1,10 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import * as _ from 'lodash';
-import { throwError } from 'rxjs';
-import { catchError, map, mapTo, switchMap, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, mapTo, switchMap, tap } from 'rxjs/operators';
+import { IResponseArray } from 'src/utils/custom-interfaces/response-array.interface';
 
+import { PaginationArgPipe } from './../shared/pipes/paginationArg.pipe';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,16 +19,25 @@ export class UserController {
   ) {}
 
   @Get()
-  @UseGuards(AuthGuard())
-  findAll() {
-    return this.userService.findAll().pipe(
-      map(users => users.map(user => _.omit(user, ['password', 'passwordHash']))),
-    );
+  findAll(
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ): Observable<IResponseArray<Partial<User>>> {
+    return this.userService.findAll(skip, take);
   }
 
   @Get(':id')
   findOneById(@Param('id') id: string) {
     return this.userService.findOneById(id);
+  }
+
+  @Post('condition')
+  findManyByCondition(
+    @Body() condition: object,
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ) {
+    return this.userService.findManyByCondition(condition, skip, take);
   }
 
   /**

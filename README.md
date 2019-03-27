@@ -8,8 +8,8 @@ TaskPlus application's backend server powered by NestJS.
 
 - [x] basic folder structure
 - [x] basic auth(JWT)
-- [ ] database setup
-- [ ] business logic for single user
+- [x] database setup
+- [x] business logic for single user
 - [ ] business logic for multiple users
 - [ ] fully tested(*black box* and *white box*)
 

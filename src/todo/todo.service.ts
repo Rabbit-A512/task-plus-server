@@ -1,11 +1,13 @@
-import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-
-import { Todo } from './todo.entity';
-import { Repository } from 'typeorm';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BaseEntityService } from 'src/utils/base-entity.service';
-import { Observable, from } from 'rxjs';
+import { IResponseArray } from 'src/utils/custom-interfaces/response-array.interface';
+import { Repository } from 'typeorm';
+
+import { UpdateTodoDto } from './dto/update-todo.dto';
+import { Todo } from './todo.entity';
 
 @Injectable()
 export class TodoService extends BaseEntityService<Todo, UpdateTodoDto> {
@@ -16,7 +18,18 @@ export class TodoService extends BaseEntityService<Todo, UpdateTodoDto> {
     super(todoRepository);
   }
 
-  findAll(): Observable<Todo[]> {
-    return from(this.todoRepository.find({ relations: ['subTodos'] }));
+  findAll(skip?: number, take?: number): Observable<IResponseArray<Todo>> {
+    return from(this.todoRepository.findAndCount({
+      relations: ['children'],
+      skip,
+      take,
+    })).pipe(
+      map(([todos, total]) => {
+        return {
+          data: todos,
+          total,
+        };
+      }),
+    );
   }
 }

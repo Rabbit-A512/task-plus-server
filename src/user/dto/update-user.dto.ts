@@ -23,6 +23,12 @@ export class UpdateUserDto {
   @IsOptional()
   passwordHash?: string;
 
+  /**
+   * 表示用户是否已被删除，写在这里为了复用update方法
+   *
+   * @type {boolean}
+   * @memberof UpdateUserDto
+   */
   @IsOptional()
   isDeleted?: boolean;
 }

@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from 'src/user/user.module';
@@ -10,6 +11,7 @@ import { TodoService } from './todo.service';
   imports: [
     TypeOrmModule.forFeature([Todo]),
     UserModule,
+    SharedModule,
   ],
   controllers: [
     TodoController,

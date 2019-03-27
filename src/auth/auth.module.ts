@@ -16,7 +16,7 @@ import { JwtStrategy } from './stragies/jwt.stragy';
     JwtModule.register({
       secretOrPrivateKey: 'secretKey',
       signOptions: {
-        expiresIn: '7 days',
+        expiresIn: '7d',
       },
     }),
     UserModule,

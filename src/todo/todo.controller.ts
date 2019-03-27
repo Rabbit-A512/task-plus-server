@@ -1,15 +1,16 @@
-import { UpdateTodoDto } from './dto/update-todo.dto';
-import { Body, Controller, Get, Param, Post, Req, UseGuards, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { EntityId } from 'src/utils/custom-types';
 import * as _ from 'lodash';
+import { switchMap } from 'rxjs/operators';
+import { PaginationArgPipe } from 'src/shared/pipes/paginationArg.pipe';
+import { EntityId } from 'src/utils/custom-types';
 
 import { IAuthorizedReq } from '../user/interfaces/authorized-req.interface';
 import { UserService } from './../user/user.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
-import { TodoService } from './todo.service';
-import { switchMap } from 'rxjs/operators';
+import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './todo.entity';
+import { TodoService } from './todo.service';
 
 @Controller('todos')
 @UseGuards(AuthGuard())
@@ -21,13 +22,23 @@ export class TodoController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.todoService.findAll();
+  findAll(
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ) {
+    return this.todoService.findAll(skip, take);
   }
 
   @Get(':id')
   findOneById(@Param('id') id: EntityId) {
     return this.todoService.findOneById(id);
+  }
+
+  @Post('condition')
+  findManyByCondition(
+    @Body() condition: object,
+  ) {
+    return this.todoService.findManyByCondition(condition);
   }
 
   @Post()

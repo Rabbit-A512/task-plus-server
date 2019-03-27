@@ -1,17 +1,20 @@
 import { Observable } from 'rxjs';
-import { DeleteResult } from 'typeorm';
 
-import { EntityId } from './custom-types';
+import { EntityId } from '../custom-types';
+import { IResponseArray } from './response-array.interface';
+
+
 
 export interface IEntityService<TEntity, TUpdateDto> {
 
   findOneById(id: EntityId): Observable<TEntity>;
 
-  findOneByCondition(condition: object): Observable<TEntity>;
+  // use findManyByCondition() instead
+  // findOneByCondition(condition: object): Observable<TEntity>;
 
-  findAll(): Observable<TEntity[]>;
+  findAll(): Observable<IResponseArray<TEntity>>;
 
-  findManyByCondition(condition: object): Observable<TEntity[]>;
+  findManyByCondition(condition: object): Observable<IResponseArray<TEntity>>;
 
   /**
    * 因为泛型无法new，所以需要在Controller中构造Entity并传入
@@ -24,5 +27,5 @@ export interface IEntityService<TEntity, TUpdateDto> {
 
   updateOneById(id: EntityId, updateDto: TUpdateDto): Observable<TEntity>;
 
-  deleteOneById(id: EntityId): Observable<DeleteResult>;
+  deleteOneById(id: EntityId): Observable<TEntity>;
 }

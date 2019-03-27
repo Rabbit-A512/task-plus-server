@@ -1,11 +1,12 @@
 import { NotFoundException } from '@nestjs/common';
 import * as _ from 'lodash';
 import { from, Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { DeleteResult, Repository } from 'typeorm';
+import { mapTo, switchMap, tap, map } from 'rxjs/operators';
+import { Repository } from 'typeorm';
 
-import { IEntityService } from './custom-interfaces';
+import { IEntityService } from './custom-interfaces/entity-service.interface';
 import { EntityId } from './custom-types';
+import { IResponseArray } from './custom-interfaces/response-array.interface';
 
 /**
  * 实体服务基类，用于复用简单的CRUD方法
@@ -38,12 +39,33 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
     );
   }
 
-  findAll(): Observable<TEntity[]> {
-    return from(this.repo.find());
+  findAll(skip?: number, take?: number): Observable<IResponseArray<TEntity>> {
+    return from(this.repo.findAndCount({
+      skip,
+      take,
+    })).pipe(
+      map(([entites, total]) => {
+        return {
+          data: entites,
+          total,
+        };
+      }),
+    );
   }
 
-  findManyByCondition(condition: object): Observable<TEntity[]> {
-    return from(this.repo.find(condition));
+  findManyByCondition(condition: object, skip?: number, take?: number): Observable<IResponseArray<TEntity>> {
+    return from(this.repo.findAndCount({
+      skip,
+      take,
+      where: condition,
+    })).pipe(
+      map(([entities, total]) => {
+        return {
+          data: entities,
+          total,
+        };
+      }),
+    );
   }
 
   /**
@@ -72,8 +94,12 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
     );
   }
 
-  // TODO: 处理找不到id对应实体的情况
-  deleteOneById(id: EntityId): Observable<DeleteResult> {
-    return from(this.repo.delete(id));
+  deleteOneById(id: EntityId): Observable<TEntity> {
+    return this.findOneById(id).pipe(
+      switchMap(entity => from(this.repo.delete(id)).pipe(
+        mapTo(entity),
+      )),
+    );
+    // return from(this.repo.delete(id));
   }
 }

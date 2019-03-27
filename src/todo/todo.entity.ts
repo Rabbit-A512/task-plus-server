@@ -24,6 +24,9 @@ export class Todo {
   @Column({ type: 'datetime', nullable: true })
   actuallyFinishedAt: string;
 
+  @Column({ nullable: true })
+  userId: number; // for query purpose
+
   // ============
   // relations
   // ============
@@ -31,17 +34,17 @@ export class Todo {
   @ManyToOne(type => User, user => user.todos, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(type => Todo, todo => todo.subTodos, { onDelete: 'CASCADE' })
-  rootTodo: Todo;
+  @ManyToOne(type => Todo, todo => todo.children, { onDelete: 'CASCADE' })
+  parent: Todo;
 
-  @OneToMany(type => Todo, todo => todo.rootTodo)
-  subTodos: Todo[];
+  @OneToMany(type => Todo, todo => todo.parent)
+  children: Todo[];
 
   // =============
   // utilities
   // =============
 
   get isRoot(): boolean {
-    return !this.rootTodo;
+    return !this.parent;
   }
 }

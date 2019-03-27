@@ -1,0 +1,9 @@
+### create a group
+
+POST http3000/groups HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTM2NzcwMDQsImV4cCI6MTU1NDI4MTgwNH0._d29mAGTtLA9UHhmosLwoWcrZJYr6iesvkeehDpIwY0
+Content-Type: application/json
+
+{
+  "name": "a512",
+}

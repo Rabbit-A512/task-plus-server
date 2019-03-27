@@ -1,10 +1,12 @@
+import { Participation } from './../participation/participation.entity';
 import { Todo } from './../todo/todo.entity';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Ownership } from 'src/ownership/ownership.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('increment', { type: 'bigint' })
-  id: string; // 因为是bigint，取出来JSON表示为string
+  @PrimaryGeneratedColumn('increment')
+  id: number; // 因为是bigint，取出来JSON表示为string
 
   @Column({ length: 50, unique: true })
   username: string;
@@ -18,9 +20,6 @@ export class User {
   @Column({ length: 100, nullable: true })
   passwordHash: string;
 
-  @OneToMany(type => Todo, todo => todo.user)
-  todos: Todo[];
-
   /**
    * 控制用户是否被删除（删除用户只改变此标志位，而不直接从DB中删除记录）
    *
@@ -29,4 +28,18 @@ export class User {
    */
   @Column({ default: false })
   isDeleted: boolean;
+
+  // ==============
+  // relations
+  // ==============
+
+  @OneToMany(type => Todo, todo => todo.user)
+  todos: Todo[];
+
+  @OneToMany(type => Ownership, ownership => ownership.owner)
+  ownerships: Ownership[];
+
+  @OneToMany(type => Participation, participation => participation.user)
+  participations: Participation[];
+
 }
