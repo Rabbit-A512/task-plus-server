@@ -1,5 +1,5 @@
 import { UserModule } from './../user/user.module';
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Group } from './group.entity';
 import { OwnershipModule } from 'src/ownership/ownership.module';
@@ -10,7 +10,7 @@ import { GroupService } from './group.service';
   imports: [
     TypeOrmModule.forFeature([Group]),
     UserModule,
-    OwnershipModule,
+    forwardRef(() => OwnershipModule),
   ],
   controllers: [
     GroupController,

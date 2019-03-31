@@ -12,6 +12,7 @@ TaskPlus application's backend server powered by NestJS.
 - [x] business logic for single user
 - [ ] business logic for multiple users
 - [ ] fully tested(*black box* and *white box*)
+- [ ] determine add ownership/participation process(API design, use id or object)
 
 ## Remarkable designs
 

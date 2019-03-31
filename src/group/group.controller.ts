@@ -1,5 +1,5 @@
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { Body, Controller, Get, Param, Post, Req, UseGuards, Put, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, UseGuards, Put, Delete, Inject, forwardRef } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import * as _ from 'lodash';
 import { map, switchMap } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class GroupController {
   constructor(
     private readonly groupService: GroupService,
     private readonly userService: UserService,
+    @Inject(forwardRef(() => OwnershipService))
     private readonly ownershipService: OwnershipService,
   ) {}
 

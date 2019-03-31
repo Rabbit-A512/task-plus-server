@@ -1,9 +1,9 @@
 ### create a group
 
-POST http3000/groups HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTM2NzcwMDQsImV4cCI6MTU1NDI4MTgwNH0._d29mAGTtLA9UHhmosLwoWcrZJYr6iesvkeehDpIwY0
+POST http://localhost:3000/groups HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTQwMTY3ODQsImV4cCI6MTU1NDYyMTU4NH0.F_QQHYceYmKudPtCLXpeSqNU43cuiDYLIAXDxsJPjEE
 Content-Type: application/json
 
 {
-  "name": "a512",
+  "name": "a512"
 }

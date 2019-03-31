@@ -27,6 +27,9 @@ export class Todo {
   @Column({ nullable: true })
   userId: number; // for query purpose
 
+  @Column({ nullable: true})
+  parentId: number;
+
   // ============
   // relations
   // ============

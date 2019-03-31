@@ -17,7 +17,10 @@ import { IResponseArray } from './custom-interfaces/response-array.interface';
  * @template TUpdateDto 实体对应的更新Dto类型
  */
 export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TEntity, TUpdateDto> {
-  constructor(private readonly repo: Repository<TEntity>) {}
+  constructor(
+    private readonly repo: Repository<TEntity>,
+    public readonly relationsToLoad: string[] = [],
+  ) {}
 
   findOneById(id: EntityId): Observable<TEntity> {
     return from(this.repo.findOne(id)).pipe(
@@ -41,6 +44,7 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
 
   findAll(skip?: number, take?: number): Observable<IResponseArray<TEntity>> {
     return from(this.repo.findAndCount({
+      relations: this.relationsToLoad,
       skip,
       take,
     })).pipe(
@@ -55,6 +59,7 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
 
   findManyByCondition(condition: object, skip?: number, take?: number): Observable<IResponseArray<TEntity>> {
     return from(this.repo.findAndCount({
+      relations: this.relationsToLoad,
       skip,
       take,
       where: condition,

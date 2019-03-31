@@ -32,6 +32,7 @@ export class CreateTodoDto {
    */
   @Validate(IsLessThan, ['planToFinishAt'])
   @IsISO8601()
+  @IsOptional() // <-- FIXME: 没有解决时间控件的问题，暂时让该字段可选
   createdAt: string;
 
   /**
@@ -45,4 +46,7 @@ export class CreateTodoDto {
   planToFinishAt: number;
 
   // actuallyFinishedAt: number;
+
+  @IsOptional()
+  parentId: number;
 }

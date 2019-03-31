@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { EntityId } from '../custom-types';
 import { IResponseArray } from './response-array.interface';
 
-
-
 export interface IEntityService<TEntity, TUpdateDto> {
 
   findOneById(id: EntityId): Observable<TEntity>;
