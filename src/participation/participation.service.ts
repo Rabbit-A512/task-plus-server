@@ -10,6 +10,6 @@ export class ParticipationService extends BaseEntityService<Participation, any> 
     @InjectRepository(Participation)
     private readonly participationRepository: Repository<Participation>,
   ) {
-    super(participationRepository);
+    super(participationRepository, ['group']);
   }
 }

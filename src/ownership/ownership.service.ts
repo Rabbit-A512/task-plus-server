@@ -11,6 +11,6 @@ export class OwnershipService extends BaseEntityService<Ownership, any> {
     @InjectRepository(Ownership)
     private readonly ownershipRepository: Repository<Ownership>,
   ) {
-    super(ownershipRepository);
+    super(ownershipRepository, ['group']);
   }
 }

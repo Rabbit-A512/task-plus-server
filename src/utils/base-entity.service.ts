@@ -1,6 +1,6 @@
 import { NotFoundException } from '@nestjs/common';
 import * as _ from 'lodash';
-import { from, Observable } from 'rxjs';
+import { from, Observable, zip } from 'rxjs';
 import { mapTo, switchMap, tap, map } from 'rxjs/operators';
 import { Repository } from 'typeorm';
 
@@ -106,5 +106,16 @@ export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TE
       )),
     );
     // return from(this.repo.delete(id));
+  }
+
+  static makeRequestArray<T>(data$: Observable<T[]>, total$: Observable<number>): Observable<IResponseArray<T>> {
+    return zip(data$, total$).pipe(
+      map(([data, total]) => {
+        return {
+          data,
+          total,
+        };
+      }),
+    );
   }
 }

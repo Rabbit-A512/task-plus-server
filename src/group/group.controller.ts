@@ -1,15 +1,18 @@
-import { UpdateGroupDto } from './dto/update-group.dto';
-import { Body, Controller, Get, Param, Post, Req, UseGuards, Put, Delete, Inject, forwardRef } from '@nestjs/common';
+import { Body, Controller, Delete, forwardRef, Get, Inject, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import * as _ from 'lodash';
 import { map, switchMap } from 'rxjs/operators';
 import { Ownership } from 'src/ownership/ownership.entity';
 import { OwnershipService } from 'src/ownership/ownership.service';
+import { PaginationArgPipe } from 'src/shared/pipes/paginationArg.pipe';
 import { IAuthorizedReq } from 'src/user/interfaces/authorized-req.interface';
 import { EntityId } from 'src/utils/custom-types';
 
+import { Participation } from './../participation/participation.entity';
+import { ParticipationService } from './../participation/participation.service';
 import { UserService } from './../user/user.service';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 import { Group } from './group.entity';
 import { GroupService } from './group.service';
 
@@ -22,11 +25,43 @@ export class GroupController {
     private readonly userService: UserService,
     @Inject(forwardRef(() => OwnershipService))
     private readonly ownershipService: OwnershipService,
+    @Inject(forwardRef(() => ParticipationService))
+    private readonly participationService: ParticipationService,
   ) {}
 
   @Get()
-  findAll() {
-    return this.groupService.findAll();
+  findAll(
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ) {
+    return this.groupService.findAll(skip, take);
+  }
+
+  @Get('own')
+  findOwnGroups(
+    @Req() req: IAuthorizedReq,
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+    ) {
+    return this.groupService.findOwnedGroupsByUserId(req.user.id, skip, take);
+  }
+
+  @Get('owned/:user_id')
+  findOwnedGroupsByUserId(
+    @Param('user_id') userId: EntityId,
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ) {
+    return this.groupService.findOwnedGroupsByUserId(userId, skip, take);
+  }
+
+  @Get('participated/:user_id')
+  findParticipatedGroupsByUserId(
+    @Param('user_id') userId: EntityId,
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
+  ) {
+    return this.groupService.findParticipatedGroupsByUserId(userId, skip, take);
   }
 
   @Get(':id')
@@ -53,13 +88,21 @@ export class GroupController {
             });
             return this.ownershipService.createOne(ownership);
           }),
+          switchMap(savedOwnership => {
+            const newParticipation = new Participation();
+            _.assign(newParticipation, {
+              userId: savedOwnership.ownerId,
+              groupId: savedOwnership.groupId,
+            });
+            return this.participationService.createOne(newParticipation);
+          }),
         );
       }),
       map(ownership => ownership.group),
     );
   }
 
-  @Put('id')
+  @Put(':id')
   updateOneById(
     @Param('id') id: EntityId,
     @Body() updateGroupDto: UpdateGroupDto,
@@ -67,7 +110,7 @@ export class GroupController {
     return this.groupService.updateOneById(id, updateGroupDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   deleteOneById(@Param('id') id: EntityId) {
     return this.groupService.deleteOneById(id);
   }

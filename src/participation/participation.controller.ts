@@ -1,13 +1,14 @@
-import { Participation } from './participation.entity';
+import { Body, Controller, Delete, forwardRef, Inject, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import * as _ from 'lodash';
+import { switchMap } from 'rxjs/operators';
+import { UserService } from 'src/user/user.service';
+import { EntityId } from 'src/utils/custom-types';
+
 import { GroupService } from './../group/group.service';
 import { CreateParticipationDto } from './dto/create-participation.dto';
+import { Participation } from './participation.entity';
 import { ParticipationService } from './participation.service';
-import { AuthGuard } from '@nestjs/passport';
-import { Controller, UseGuards, Post, Body, Query, Delete, Param } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
-import { switchMap } from 'rxjs/operators';
-import * as _ from 'lodash';
-import { EntityId } from 'src/utils/custom-types';
 
 @Controller('participations')
 @UseGuards(AuthGuard())
@@ -15,6 +16,7 @@ export class ParticipationController {
   constructor(
     private readonly participationService: ParticipationService,
     private readonly userService: UserService,
+    @Inject(forwardRef(() => GroupService))
     private readonly groupService: GroupService,
   ) {}
 
@@ -41,7 +43,7 @@ export class ParticipationController {
     );
   }
 
-  @Delete('id')
+  @Delete(':id')
   deleteOneById(@Param('id') id: EntityId) {
     return this.deleteOneById(id);
   }

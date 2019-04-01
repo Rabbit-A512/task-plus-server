@@ -1,9 +1,19 @@
 ### create a group
 
 POST http://localhost:3000/groups HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTQwMTY3ODQsImV4cCI6MTU1NDYyMTU4NH0.F_QQHYceYmKudPtCLXpeSqNU43cuiDYLIAXDxsJPjEE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmlja25hbWUiOiJhZG1pbiIsImlhdCI6MTU1NDEzMzk0MywiZXhwIjoxNTU0NzM4NzQzfQ.qDCloMOTO4I1ugxBH1otVz_DQ7t9GpFZtlVox8ebXQc
 Content-Type: application/json
 
 {
-  "name": "a512"
+  "name": "admin1_test_group"
 }
+
+### get own groups
+
+GET http://localhost:3000/groups/own HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTQxMzE2MjAsImV4cCI6MTU1NDczNjQyMH0._o9tX4ynrn7R8R8UOgnGFvvUtwXc9k39of2vqjyeRxQ
+
+### get all groups
+
+GET http://localhost:3000/groups HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwibmlja25hbWUiOiJyYWJiaXQiLCJpYXQiOjE1NTQxMzE2MjAsImV4cCI6MTU1NDczNjQyMH0._o9tX4ynrn7R8R8UOgnGFvvUtwXc9k39of2vqjyeRxQ

@@ -48,7 +48,7 @@ export class OwnershipController {
     );
   }
 
-  @Delete('id')
+  @Delete(':id')
   deleteOneById(@Param('id') id: EntityId) {
     return this.ownershipService.deleteOneById(id);
   }
