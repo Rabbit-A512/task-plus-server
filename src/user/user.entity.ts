@@ -1,7 +1,9 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { Ownership } from './../ownership/ownership.entity';
 import { Participation } from './../participation/participation.entity';
+import { Task } from './../task/task.entity';
 import { Todo } from './../todo/todo.entity';
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Ownership } from 'src/ownership/ownership.entity';
 
 @Entity()
 export class User {
@@ -35,6 +37,9 @@ export class User {
 
   @OneToMany(type => Todo, todo => todo.user)
   todos: Todo[];
+
+  @OneToMany(type => Task, task => task.user)
+  tasks: Task[];
 
   @OneToMany(type => Ownership, ownership => ownership.owner)
   ownerships: Ownership[];

@@ -49,4 +49,7 @@ export class CreateTodoDto {
 
   @IsOptional()
   parentId: number;
+
+  @IsOptional()
+  userId: number;
 }

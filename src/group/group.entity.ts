@@ -22,7 +22,7 @@ export class Group {
   ownerships: Ownership[];
 
   @OneToMany(type => Participation, participation => participation.group)
-  paritcipations: Participation[];
+  participations: Participation[];
 
   @OneToMany(type => Task, task => task.group)
   tasks: Task[];

@@ -24,21 +24,21 @@ export class Todo {
   @Column({ type: 'datetime', nullable: true })
   actuallyFinishedAt: string;
 
-  @Column({ nullable: true })
-  userId: number; // for query purpose
-
-  @Column({ nullable: true})
-  parentId: number;
-
   // ============
   // relations
   // ============
 
-  @ManyToOne(type => User, user => user.todos, { onDelete: 'CASCADE' })
+  @ManyToOne(type => User, user => user.tasks, { onDelete: 'CASCADE' })
   user: User;
+
+  @Column({ nullable: true })
+  userId: number;
 
   @ManyToOne(type => Todo, todo => todo.children, { onDelete: 'CASCADE' })
   parent: Todo;
+
+  @Column({ nullable: true })
+  parentId: number;
 
   @OneToMany(type => Todo, todo => todo.parent)
   children: Todo[];

@@ -62,40 +62,6 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
     );
   }
 
-  // /**
-  //  * 创建用户，由于涉及密码哈希，因此这是一个新的方法
-  //  *
-  //  * @param {CreateUserDto} newUser
-  //  * @returns {Observable<User>}
-  //  * @memberof UserService
-  //  */
-  // createOne(newUser: CreateUserDto): Observable<User> {
-  //   return this.generateHashSimple(newUser.password).pipe(
-  //     catchError(err => throwError(new Error(`hash failed: ${err}`))),
-  //     switchMap(hash => {
-  //       const user = new User();
-  //       user.username = newUser.username;
-  //       user.nickname = newUser.nickname;
-  //       user.passwordHash = hash;
-  //       return this.userRepository.save(user);
-  //     }),
-  //   );
-  // }
-
-  // updateOneById(id: EntityId, updatedUser: UpdateUserDto): Observable<User> {
-  //   return this.findOneById(id).pipe(
-  //     tap(user => {
-  //       if (!user) {
-  //         throw new NotFoundException();
-  //       }
-  //     }),
-  //     switchMap(user => {
-  //       Object.assign(user, updatedUser);
-  //       return from(this.userRepository.save(user));
-  //     }),
-  //   );
-  // }
-
   deleteOneById(id: EntityId): Observable<User> {
     return this.updateOneById(id, { isDeleted: true });
   }

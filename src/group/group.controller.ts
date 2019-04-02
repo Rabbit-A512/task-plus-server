@@ -69,6 +69,16 @@ export class GroupController {
     return this.groupService.findOneById(id);
   }
 
+  @Get(':id/owners')
+  findOwnersByGroupId(@Param('id') groupId: EntityId) {
+    return this.groupService.findOwnersByGroupId(groupId);
+  }
+
+  @Get(':id/participators')
+  findParticipatorsByGroupId(@Param('id') groupId: EntityId) {
+    return this.groupService.findParticipatorsByGroupId(groupId);
+  }
+
   @Post()
   createOne(
     @Req() req: IAuthorizedReq,

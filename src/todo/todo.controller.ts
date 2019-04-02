@@ -37,8 +37,10 @@ export class TodoController {
   @Post('condition')
   findManyByCondition(
     @Body() condition: object,
+    @Query('skip', PaginationArgPipe) skip?: number,
+    @Query('take', PaginationArgPipe) take?: number,
   ) {
-    return this.todoService.findManyByCondition(condition);
+    return this.todoService.findManyByCondition(condition, skip, take);
   }
 
   @Post()
