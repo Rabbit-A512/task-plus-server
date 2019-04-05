@@ -31,4 +31,13 @@ export class UpdateUserDto {
    */
   @IsOptional()
   isDeleted?: boolean;
+
+  /**
+   * 用户的默认组织id
+   *
+   * @type {number}
+   * @memberof UpdateUserDto
+   */
+  @IsOptional()
+  defaultGroupId?: number;
 }

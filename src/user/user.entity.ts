@@ -1,4 +1,5 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Group } from './../group/group.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 import { Ownership } from './../ownership/ownership.entity';
 import { Participation } from './../participation/participation.entity';
@@ -46,5 +47,11 @@ export class User {
 
   @OneToMany(type => Participation, participation => participation.user)
   participations: Participation[];
+
+  @ManyToOne(type => Group, group => group.usersSetThisGroupAsDefault, { onDelete: 'SET NULL', nullable: true })
+  defaultGroup: Group;
+
+  @Column({ nullable: true })
+  defaultGroupId: number;
 
 }

@@ -41,7 +41,7 @@ export class AuthController {
         }),
       )),
       map(user => {
-        const userPayload: IUserPayload = _.pick(user, ['id', 'nickname']);
+        const userPayload: IUserPayload = _.pick(user, ['id', 'nickname', 'defaultGroupId']);
         return this.authService.createToken(userPayload);
       }),
       catchError(err => {

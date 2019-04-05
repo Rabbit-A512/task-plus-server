@@ -18,8 +18,8 @@ import { IResponseArray } from './custom-interfaces/response-array.interface';
  */
 export class BaseEntityService<TEntity, TUpdateDto> implements IEntityService<TEntity, TUpdateDto> {
   constructor(
-    private readonly repo: Repository<TEntity>,
-    public readonly relationsToLoad: string[] = [],
+    protected readonly repo: Repository<TEntity>,
+    protected readonly relationsToLoad: string[] = [],
   ) {}
 
   findOneById(id: EntityId): Observable<TEntity> {

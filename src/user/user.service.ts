@@ -17,7 +17,7 @@ export class UserService extends BaseEntityService<User, UpdateUserDto> {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {
-    super(userRepository);
+    super(userRepository, ['defaultGroup']);
   }
 
   findOneById(id: EntityId): Observable<User> {

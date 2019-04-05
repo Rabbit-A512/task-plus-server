@@ -14,7 +14,7 @@ export class Participation {
   @ManyToOne(type => User, user => user.participations, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(type => Group, group => group.paritcipations, { onDelete: 'CASCADE' })
+  @ManyToOne(type => Group, group => group.participations, { onDelete: 'CASCADE' })
   group: Group;
 
   @Column({ nullable: true })

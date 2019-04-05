@@ -1,6 +1,5 @@
 import { Entity, ManyToOne, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
-import { Todo } from './../todo/todo.entity';
 import { Group } from './../group/group.entity';
 import { User } from 'src/user/user.entity';
 
